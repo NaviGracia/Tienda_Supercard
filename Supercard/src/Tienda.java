@@ -23,6 +23,62 @@ public class Tienda {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 
+    //Insertar Datos a la BD
+    static public void insertarSobreBD(Connection conexion, PreparedStatement sentencia){
+        
+       try {
+            String sentenciaSQL = "INSERT INTO sobre VALUES(?, ?)";
+            sentencia = conexion.prepareStatement(sentenciaSQL);
+
+            System.out.println("Inserte el tamaño del sobre:");
+            sentencia.setInt(1, sc.nextInt());
+            System.out.println("Inserte el precio del sobre:");
+            sentencia.setDouble(2, sc.nextDouble());sc.nextLine();
+            sentencia.executeUpdate();
+            System.out.println("Sobre añadido");
+       } catch (Exception e) {
+        // TODO: handle exception
+        System.out.println("Error al insertar un sobre");
+       }
+    }
+
+    static public void insertarCartaLuchadorBD(Connection conexion, PreparedStatement sentencia){
+        
+        try {
+             String sentenciaSQL = "INSERT INTO luchador VALUES(?, ?)";
+             sentencia = conexion.prepareStatement(sentenciaSQL);
+ 
+             System.out.println("Inserte el tamaño del sobre:");
+             sentencia.setInt(1, sc.nextInt());
+             System.out.println("Inserte el precio del sobre:");
+             sentencia.setDouble(2, sc.nextDouble());sc.nextLine();
+             sentencia.executeUpdate();
+             System.out.println("Sobre añadido");
+        } catch (Exception e) {
+         // TODO: handle exception
+         System.out.println("Error al insertar un sobre");
+        }
+     }
+
+    static public void registrarNuevoProducto(Connection conexion){
+        System.out.println("Inserta el tipo de producto que se va a añadir:");
+        String tabla = sc.nextLine();
+        PreparedStatement sentencia = null;
+
+        try{
+            if (tabla.equalsIgnoreCase("Sobre")) {
+                String seguir;
+                do {
+                    insertarSobreBD(conexion, sentencia);
+                    System.out.println("Desea añadir otro sobre? (Si | No)");
+                    seguir = sc.nextLine();
+                } while (seguir.equalsIgnoreCase("Si"));
+            }
+        }catch (Exception e) {
+            System.out.println("Error al registrar un nuevo producto");
+        } 
+    }
+
         public static int generarNº(){
             return (int) (Math.random()*68+1);   
         }
@@ -91,12 +147,12 @@ public class Tienda {
 
         int eleccion;
         do {    
-            System.out.println("Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + "\n 1. Registrar Nuevo Producto" + "\n 2. Buscar Producto" + "\n 3. Eliminar Producto" + "\n 4. Actualizar Producto" + "\n 5. Salir");
+            System.out.println("Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + "\n 1. Registrar Nuevo Producto" + "\n 2. Buscar Producto" + "\n 3. Eliminar Producto" + "\n 4. Actualizar Producto" + "\n 6. Salir");
             eleccion = sc.nextInt();
             sc.nextLine();
             switch (eleccion) {
                 case 1:
-                    generar_joker_sobre(conexion, st);
+                    registrarNuevoProducto(conexion);
                     break;
                 case 2:
                     
@@ -110,7 +166,7 @@ public class Tienda {
                 case 5:
                 
                     break;
-                case 9: 
+                case 6: 
                     System.out.println("Saliendo del Programa");
                     break;
                 default:
