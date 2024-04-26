@@ -26,10 +26,10 @@ public class Tienda extends Entrada_Salida{
         String sql = "INSERT INTO carta VALUES(?, ?, ?, ?)";
         try {
             PreparedStatement sentencia = conexion.prepareStatement(sql);
-            sentencia.setInt(1, devolverNum());
-            sentencia.setString(2, devolverCadena());
-            sentencia.setString(3, devolverCadena());
-            sentencia.setDouble(4, devolverDinero());
+            sentencia.setInt(1, devolverNumCarta());
+            sentencia.setString(2, devolverNombre());
+            sentencia.setString(3, devolverCategoria());
+            sentencia.setDouble(4, devolverPrecio());
             sentencia.executeUpdate();
             System.out.println("Carta registrada correctamente");
         } catch (Exception e) {
@@ -41,11 +41,11 @@ public class Tienda extends Entrada_Salida{
     }
 
     public static void buscarProducto(Statement st, Connection conexion) throws Exception{
-        String sql = "SELECT * FROM ?";
+        String sql = "SELECT * FROM catalogo_cartas WHERE n_carta = ?";
         PreparedStatement sentencia = conexion.prepareStatement(sql);
         //Se puede mejorar el sistema de búsqueda
-        System.out.println("Introduzca el ID del producto que desea buscar");
-        sentencia.setString(1, devolverCadena());
+        System.out.println("Introduzca el Nº de la carta que desea buscar");
+        sentencia.setInt(1, devolverNumCarta());
         ResultSet rs = sentencia.executeQuery();
 
         System.out.println("Mostrando Resultados:");
@@ -74,8 +74,8 @@ public class Tienda extends Entrada_Salida{
 
     int eleccion;
     do {    
-        System.out.println("Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + "\n 1. Registrar Nuevo Producto" + "\n 2. Buscar Producto" + "\n 3. Eliminar Producto" + "\n 4. Actualizar Producto" + "\n 6. Salir");
-        eleccion = devolverNum();sc.nextLine();
+        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + "\n 1. Registrar Nuevo Producto" + "\n 2. Buscar Producto" + "\n 3. Eliminar Producto" + "\n 4. Actualizar Producto" + "\n 6. Salir" + ANSI_RESET);
+        eleccion = devolverOpcion();
         switch (eleccion) {
             case 1:
                 registrarNuevaCarta(conexion);
