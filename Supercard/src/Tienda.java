@@ -79,56 +79,7 @@ public class Tienda {
         } 
     }
 
-        public static int generarNº(){
-            return (int) (Math.random()*68+1);   
-        }
 
-        public static void generarJoker(Connection conexion, Statement st, int i, ArrayList<Integer> al){
-            try {
-                al.add(0);
-                for (int ind = 1; ind <= i; ind++) {
-                    int generate = generarNº();
-                    for (Integer num : al) {
-                        if (generate==num) {
-                            i-=1;
-                        }else{
-                            al.add(generate);
-                            String sql = "SELECT name, effect, rarity, cost FROM jokers WHERE id = ?";
-                            PreparedStatement ps = conexion.prepareStatement(sql);
-                            ps.setInt(1, generate);
-                            ResultSet rs = ps.executeQuery();
-
-                            while (rs.next()) {
-                                System.out.println("Carta " + ind + ": " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getInt(4) + "$");
-                            }
-                        }
-                    }
-                }
-
-
-            } catch (Exception e) {
-                // TODO: handle exception
-                System.out.println("Error en la generación de Jokers");
-            }
-        }
-
-        public static void generar_joker_sobre(Connection conexion, Statement st){
-            System.out.println("Elige el nº del tipo de sobre a abrir: \n 1- Standard (2) \n 2- Jumbo (4) \n 3- Mega (5)");
-            int eleccion = sc.nextInt();
-            ArrayList<Integer> al = new ArrayList<>();
-            switch (eleccion) {
-                case 1:
-                    System.out.println("Abriendo Sobre Standard:");
-                    generarJoker(conexion, st, 2, al);                       
-                    break;
-                case 2:
-
-                    break;
-                case 3:
-
-                    break;
-            }
-        }
         public static void main(String[] args) throws Exception {
         //Conectar BD
         try {

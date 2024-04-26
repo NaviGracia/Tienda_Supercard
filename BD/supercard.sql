@@ -32,6 +32,16 @@ CREATE TABLE IF NOT EXISTS public.catalogo
 	CONSTRAINT fk_id_producto_sobre FOREIGN KEY(id_producto) REFERENCES sobre(id_producto)
 );
 
+CREATE TABLE IF NOT EXISTS public.luchador(
+	n_carta integer PRIMARY KEY,
+	fuerza int,
+	resistencia int,
+	velocidad int,
+	carisma int
+);
 
 
 END;
+
+ALTER TABLE carta ADD CONSTRAINT fk_n_carta FOREIGN KEY (n_carta) REFERENCES luchador(n_carta);
+
