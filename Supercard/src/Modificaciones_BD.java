@@ -33,7 +33,6 @@
 //Consultar en la BD  
 static public void consultaBD(Statement st, Connection conexion) throws Exception{
      //Consulta
-     conexion.commit();
      System.out.println("Inserta la tabla a consultar:");
      String tabla = sc.nextLine();
      ResultSet rs = st.executeQuery("SELECT * FROM " + tabla);
