@@ -10,7 +10,9 @@ public class Entrada_Salida {
     static Scanner sc = new Scanner(System.in);
     
     public static int devolverNum(){
-        return sc.nextInt();
+        int num = sc.nextInt();
+        sc.nextLine();
+        return num;
     }
 
     public static String devolverCadena(){
