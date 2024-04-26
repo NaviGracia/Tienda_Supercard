@@ -46,7 +46,6 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER eliminar_producto_catalogo
 BEFORE DELETE ON carta
-FOR EACH ROW
 EXECUTE FUNCTION eliminar_catalogo();
 
 /*------------------------------------------------------------------------------------*/
