@@ -22,13 +22,13 @@ public class Tienda extends Entrada_Salida{
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 
     //Insertar Datos a la BD
-    public static void registrarNuevaCarta(Connection conexion){
+    public static void registrarNuevaCarta(Connection conexion, Statement st){
         String sql = "INSERT INTO carta VALUES(?, ?, ?, ?)";
         try {
             PreparedStatement sentencia = conexion.prepareStatement(sql);
             sentencia.setInt(1, devolverNumCarta());
             sentencia.setString(2, devolverNombre());
-            sentencia.setString(3, devolverCategoria());
+            sentencia.setString(3, devolverCategoria(st, conexion));
             sentencia.setDouble(4, devolverPrecio());
             sentencia.executeUpdate();
             System.out.println("Carta registrada correctamente");
@@ -41,18 +41,7 @@ public class Tienda extends Entrada_Salida{
     }
 
     public static void buscarProducto(Statement st, Connection conexion) throws Exception{
-        String sql = "SELECT * FROM catalogo_cartas WHERE n_carta = ?";
-        PreparedStatement sentencia = conexion.prepareStatement(sql);
-        //Se puede mejorar el sistema de búsqueda
-        System.out.println("Introduzca el Nº de la carta que desea buscar");
-        sentencia.setInt(1, devolverNumCarta());
-        ResultSet rs = sentencia.executeQuery();
-
-        System.out.println("Mostrando Resultados:");
-        while (rs.next()) {
-         System.out.println(ANSI_RED + rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getDouble(4) + ANSI_RESET);
-     }
-     rs.close();
+//Haciendo la consulta
     }
 
 
@@ -69,8 +58,6 @@ public class Tienda extends Entrada_Salida{
     conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Supercard", "dam", "dam");
     Statement st = conexion.createStatement();
     conexion.setAutoCommit(false);
-    
-    
 
     int eleccion;
     do {    
@@ -78,7 +65,7 @@ public class Tienda extends Entrada_Salida{
         eleccion = devolverOpcion();
         switch (eleccion) {
             case 1:
-                registrarNuevaCarta(conexion);
+                registrarNuevaCarta(conexion, st); //De momento acaabado
                 break;
             case 2:
                 

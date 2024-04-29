@@ -1,9 +1,15 @@
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Scanner;
 
 /**
  * Entrada_Salida
  */
 public class Entrada_Salida {
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_RESET = "\u001B[0m";
+
     private int num;
     private String cadena;
     private double dinero;
@@ -31,8 +37,21 @@ public class Entrada_Salida {
         return sc.nextLine();
     }
 
-    public static String devolverCategoria(){
+    public static void mostrarCategorias(Statement st, Connection conexion){
+        try {
+            ResultSet rs = st.executeQuery("SELECT categoria FROM categoria");
+            while (rs.next()) {
+                System.out.println(ANSI_CYAN + rs.getString(1) + ANSI_RESET);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("Error al mostrar las categorias registradas en la BD: " + e);
+        }
+    }
+
+    public static String devolverCategoria(Statement st, Connection conexion){
         System.out.println("Inserte la categoría:");
+        mostrarCategorias(st, conexion);
         return sc.nextLine();
     }
     

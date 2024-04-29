@@ -6,10 +6,12 @@ CREATE TABLE IF NOT EXISTS public.carta
     n_carta integer PRIMARY KEY,
     nombre character varying(50),
     categoria character varying(30),
-	precio double precision
+	precio double precision,
+	CONSTRAINT fk_categoria_carta FOREIGN KEY(categoria) REFERENCES categoria(categoria)
 );
 
 INSERT INTO carta VALUES(1, 'Roman Reigns', 'Wrestlemania 40', 5.99);
+INSERT INTO carta VALUES(124, 'Roman Reigns', 'Tundra', 3.99);
 SELECT * FROM catalogo_cartas
 
 /*------------------------------------------------------------------------------------*/
@@ -20,13 +22,14 @@ CREATE TABLE IF NOT EXISTS public.catalogo_cartas
 	nombre character varying(50),
     precio double precision,
 	stock integer,
+	categoria varchar(30),
 	CONSTRAINT fk_n_carta FOREIGN KEY(n_carta) REFERENCES carta(n_carta)
 );
 
 CREATE OR REPLACE FUNCTION registrar_catalogo()
 RETURNS TRIGGER AS $$
 BEGIN
-INSERT INTO catalogo_cartas VALUES(NEW.n_carta, NEW.nombre, NEW.precio, 100);
+INSERT INTO catalogo_cartas VALUES(NEW.n_carta, NEW.nombre, NEW.precio, 100, NEW.categoria);
 RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -39,14 +42,17 @@ EXECUTE FUNCTION registrar_catalogo();
 CREATE OR REPLACE FUNCTION eliminar_catalogo()
 RETURNS TRIGGER AS $$
 BEGIN
-DELETE FROM catalogo_cartas WHERE n_carta = NEW.n_carta;
-RETURN NEW;
+DELETE FROM catalogo_cartas WHERE n_carta = OLD.n_carta;
+RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER eliminar_producto_catalogo
 BEFORE DELETE ON carta
+FOR EACH ROW
 EXECUTE FUNCTION eliminar_catalogo();
+
+
 
 /*------------------------------------------------------------------------------------*/
 CREATE TABLE IF NOT EXISTS public.luchador(
@@ -58,9 +64,37 @@ CREATE TABLE IF NOT EXISTS public.luchador(
 	CONSTRAINT fk_n_carta_carta FOREIGN KEY (n_carta) REFERENCES carta(n_carta)
 );
 
+CREATE OR REPLACE FUNCTION eliminar_luchador()
+RETURNS TRIGGER AS $$
+BEGIN
+DELETE FROM luchador WHERE n_carta = OLD.n_carta;
+RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER eliminar_luchador
+BEFORE DELETE ON carta
+FOR EACH ROW
+EXECUTE FUNCTION eliminar_luchador();
+
 INSERT INTO luchador VALUES(1, 21, 19, 18, 20)
 
 /*------------------------------------------------------------------------------------*/
 
-CREATE TABLE IF NOT EXISTS public.categoria
-DELETE FROM catalogocarta where n_carta=1
+CREATE TABLE IF NOT EXISTS public.categoria(
+	categoria varchar(30) PRIMARY KEY,
+	fecha_lanzamiento date
+);
+
+INSERT INTO categoria VALUES('Wrestlemania 40', '2024-03-27');
+INSERT INTO categoria VALUES('Royal Rumble 24', '2024-01-24');
+INSERT INTO categoria VALUES('Tundra', '2023-12-20');
+
+/*------------------------------------------------------------------------------------*/
+
+SELECT * FROM carta
+SELECT * FROM catalogo_cartas
+SELECT categoria FROM categoria
+
+/*Consulta busqueda*/
+SELECT
