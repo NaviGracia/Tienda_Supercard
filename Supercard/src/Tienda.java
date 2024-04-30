@@ -42,6 +42,11 @@ public class Tienda extends Entrada_Salida{
 
     public static void buscarProducto(Statement st, Connection conexion) throws Exception{
 //Haciendo la consulta
+
+    }
+
+    public static void mostrarCatalogo(){
+        
     }
 
 
@@ -61,7 +66,7 @@ public class Tienda extends Entrada_Salida{
 
     int eleccion;
     do {    
-        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + "\n 1. Registrar Nuevo Producto" + "\n 2. Buscar Producto" + "\n 3. Eliminar Producto" + "\n 4. Actualizar Producto" + "\n 6. Salir" + ANSI_RESET);
+        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + "\n 1. Registrar Nueva Carta" + "\n 2. Buscar Carta" + "\n 3. Eliminar Producto" + "\n 4. Actualizar Producto" + "\n 5. Mostrar Catalogo" + "\n 6. Salir" + ANSI_RESET);
         eleccion = devolverOpcion();
         switch (eleccion) {
             case 1:

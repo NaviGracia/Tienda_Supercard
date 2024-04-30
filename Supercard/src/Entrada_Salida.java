@@ -27,13 +27,13 @@ public class Entrada_Salida {
     }
 
     public static int devolverNumCarta(){
-        System.out.println("Inserte el nº de carta:");
+        System.out.println("Inserte el nº:");
         int n = sc.nextInt();limpiar();
         return n;
     }
 
     public static String devolverNombre(){
-        System.out.println("Inserte el nombre de la carta:");
+        System.out.println("Inserte el nombre:");
         return sc.nextLine();
     }
 
