@@ -7,12 +7,19 @@ public class Luchador extends Carta{
     private int velocidad;
     private int carisma;
     
-    public Luchador(int id, String categoria, String nombre, int fuerza, int resistencia, int velocidad, int carisma) {
-        super(id, categoria, nombre);
+    public Luchador(int n_carta, String nombre, String categoria, double precio, int stock, int fuerza, int resistencia,
+            int velocidad, int carisma) {
+        super(n_carta, nombre, categoria, precio, stock);
         this.fuerza = fuerza;
         this.resistencia = resistencia;
         this.velocidad = velocidad;
         this.carisma = carisma;
     }
+
+
+
+
+    
+
     
 }
