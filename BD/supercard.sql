@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS public.carta
     nombre character varying(50),
     categoria character varying(30),
 	precio double precision,
+	stock integer,
 	CONSTRAINT fk_categoria_carta FOREIGN KEY(categoria) REFERENCES categoria(categoria)
 );
 
@@ -52,6 +53,18 @@ BEFORE DELETE ON carta
 FOR EACH ROW
 EXECUTE FUNCTION eliminar_catalogo();
 
+CREATE OR REPLACE FUNCTION actualizar_stock()
+RETURNS TRIGGER AS $$
+BEGIN
+UPDATE catalogo_cartas SET stock = NEW.stock WHERE n_carta = NEW.n_carta;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER actualizar_stock_catalogo
+AFTER UPDATE ON carta
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_stock();
 
 
 /*------------------------------------------------------------------------------------*/
@@ -97,4 +110,5 @@ SELECT * FROM catalogo_cartas
 SELECT categoria FROM categoria
 
 /*Consulta busqueda*/
-SELECT
+SELECT ca.n_carta, ca.nombre, ca.categoria, ca.precio, ca.stock, l.fuerza, l.resistencia, l.velocidad, l.carisma
+FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta
