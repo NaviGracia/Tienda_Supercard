@@ -112,3 +112,5 @@ SELECT categoria FROM categoria
 /*Consulta busqueda*/
 SELECT ca.n_carta, ca.nombre, ca.categoria, ca.precio, ca.stock, l.fuerza, l.resistencia, l.velocidad, l.carisma
 FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta
+
+UPDATE carta SET stock = 100 WHERE n_carta = 4
