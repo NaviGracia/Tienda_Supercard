@@ -16,8 +16,43 @@ public class Luchador extends Carta{
         this.carisma = carisma;
     }
 
+    public int getFuerza() {
+        return fuerza;
+    }
 
+    public void setFuerza(int fuerza) {
+        this.fuerza = fuerza;
+    }
 
+    public int getResistencia() {
+        return resistencia;
+    }
+
+    public void setResistencia(int resistencia) {
+        this.resistencia = resistencia;
+    }
+
+    public int getVelocidad() {
+        return velocidad;
+    }
+
+    public void setVelocidad(int velocidad) {
+        this.velocidad = velocidad;
+    }
+
+    public int getCarisma() {
+        return carisma;
+    }
+
+    public void setCarisma(int carisma) {
+        this.carisma = carisma;
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.getN_carta() + "\t" + super.getNombre() + "\t" + super.getCategoria() + "\t" + fuerza + "\t" + resistencia + "\t" + velocidad + "\t" + carisma + "\t" + super.getPrecio() + "€ \t" + super.getStock();
+    }
 
     
 
