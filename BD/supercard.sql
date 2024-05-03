@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS public.carta
 
 INSERT INTO carta VALUES(1, 'Roman Reigns', 'Wrestlemania 40', 5.99);
 INSERT INTO carta VALUES(124, 'Roman Reigns', 'Tundra', 3.99);
+DELETE FROM carta WHERE n_carta = 124
 SELECT * FROM catalogo_cartas
 
 /*------------------------------------------------------------------------------------*/
@@ -40,7 +41,7 @@ AFTER INSERT ON carta
 FOR EACH ROW
 EXECUTE FUNCTION registrar_catalogo();
 
-CREATE OR REPLACE FUNCTION eliminar_catalogo()
+CREATE OR REPLACE FUNCTION eliminar_carta_catalogo()
 RETURNS TRIGGER AS $$
 BEGIN
 DELETE FROM catalogo_cartas WHERE n_carta = OLD.n_carta;
@@ -51,7 +52,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER eliminar_producto_catalogo
 BEFORE DELETE ON carta
 FOR EACH ROW
-EXECUTE FUNCTION eliminar_catalogo();
+EXECUTE FUNCTION eliminar_carta_catalogo();
 
 CREATE OR REPLACE FUNCTION actualizar_stock()
 RETURNS TRIGGER AS $$
@@ -80,7 +81,9 @@ CREATE TABLE IF NOT EXISTS public.luchador(
 CREATE OR REPLACE FUNCTION eliminar_luchador()
 RETURNS TRIGGER AS $$
 BEGIN
-DELETE FROM luchador WHERE n_carta = OLD.n_carta;
+	IF EXISTS(SELECT n_carta FROM luchador WHERE n_carta = OLD.n_carta) THEN
+		DELETE FROM luchador WHERE n_carta = OLD.n_carta;
+	END IF;
 RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
@@ -106,11 +109,14 @@ INSERT INTO categoria VALUES('Tundra', '2023-12-20');
 /*------------------------------------------------------------------------------------*/
 
 SELECT * FROM carta
-SELECT * FROM catalogo_cartas
+SELECT * FROM catalogo_cartas ORDER BY n_carta
 SELECT categoria FROM categoria
+SELECT * FROM luchador
 
 /*Consulta busqueda*/
 SELECT ca.n_carta, ca.nombre, ca.categoria, ca.precio, ca.stock, l.fuerza, l.resistencia, l.velocidad, l.carisma
 FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta
 
 UPDATE carta SET stock = 100 WHERE n_carta = 4
+
+UPDATE catalogo_cartas SET nombre = 'Cody Rhodes' WHERE n_carta = 2
