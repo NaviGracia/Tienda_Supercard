@@ -45,7 +45,7 @@ public class Luchador extends Carta{
     }
 
     public void setCarisma(int carisma) {
-        this.carisma = carisma;
+        this.carisma = carintisma;
     }
 
     @Override

@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class Tienda extends Entrada_Salida{
@@ -21,14 +22,14 @@ public class Tienda extends Entrada_Salida{
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 
-    static ArrayList<Luchador> luchadores = new ArrayList<>();
+    static HashMap<Integer, Luchador> luchadores = new HashMap<Integer, Luchador>();
 
     //Conversión de BD a objetos
     public static String conversionCartas(Statement st){
         try {
             ResultSet rs = st.executeQuery("SELECT ca.n_carta, ca.nombre, ca.categoria, ca.precio, ca.stock, l.fuerza, l.resistencia, l.velocidad, l.carisma FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta");
             while (rs.next()) {
-                luchadores.add(new Luchador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9)));
+                luchadores.put(rs.getInt(1), new Luchador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9)));
             }
             return "Cartas cargadas correctamente";
         } catch (Exception e) {
@@ -128,7 +129,7 @@ public class Tienda extends Entrada_Salida{
         try {
             ResultSet rs = st.executeQuery("SELECT ca.n_carta, ca.nombre, ca.categoria, ca.precio, ca.stock, l.fuerza, l.resistencia, l.velocidad, l.carisma FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta WHERE ca.n_carta = " + nCarta);
             while (rs.next()) {
-                luchadores.add(new Luchador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9)));
+                luchadores.put(rs.getInt(1), new Luchador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9)));
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -153,17 +154,30 @@ public class Tienda extends Entrada_Salida{
         System.out.println("Menú de Búsqueda: \n1. Nº Carta \n2. Nombre \n3. Categoría");
         //Hacer la consulta
     }
+
     //Eliminación de Cartas (*Aquí estoy*) (ArrayList {Como iterar})
     public static String eliminarCarta(Connection conexion){
+        PreparedStatement sentencia = null;
+        String sql = "DELETE FROM carta WHERE n_carta = ?";
+        try {
+            sentencia = conexion.prepareStatement(sql);
+            int n_carta_eliminar = recibirNumCarta();
+            luchadores.remove(n_carta_eliminar);
+            sentencia.setInt(1, n_carta_eliminar);
+            sentencia.executeQuery();
+            return "Carta eliminada correctamente";
+        } catch (Exception e) {
+            // TODO: handle exception
+            return "Fallo en la eliminación de cartas: " + e;
 
-        return "a";
+        }
     }
 
     public static void mostrarCatalogo(Statement st) throws Exception{
         ResultSet rs = st.executeQuery("SELECT n_carta, nombre, categoria, precio, stock FROM catalogo_cartas ORDER BY n_carta");
         int controladorCatalogo = 0;
         while (rs.next()) {
-            if (controladorCatalogo == 4) {
+            if (controladorCatalogo == 6) {
                 toStringCarta(rs);
                 controladorResultados();
                 controladorCatalogo = 0;
@@ -176,11 +190,18 @@ public class Tienda extends Entrada_Salida{
     }
 
     public static void mostrarCartas() throws Exception{
-        //Me falta ordenar arraylist
         //Arreglar Tabulaciones
         System.out.println(ANSI_RED + "NºCarta\tNombre \tCategoría \tFuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
-        for (Luchador l : luchadores) {
-            System.out.println(ANSI_CYAN + l.toString() + ANSI_RESET);
+        int controladorCatalogo = 0;
+        for(Luchador l : luchadores.values()){
+            if (controladorCatalogo == 6) {
+                System.out.println(l.toString());
+                controladorResultados();
+                controladorCatalogo = 0;
+            } else{
+                System.out.println(l.toString());
+                controladorCatalogo++;
+            }
         }
     }
 
@@ -215,7 +236,7 @@ public class Tienda extends Entrada_Salida{
                 
                 break;
             case 3:
-            
+                System.out.println(eliminarCarta(conexion));
                 break;
             case 4:
                 
@@ -238,5 +259,4 @@ public class Tienda extends Entrada_Salida{
 }
 
 
-    
     
