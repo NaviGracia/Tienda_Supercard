@@ -193,7 +193,7 @@ public class Tienda extends Entrada_Salida{
     public static void busquedaNombre(){
         String nombreBusqueda = recibirNombreCarta();
         for (Luchador l : luchadores.values()) {
-            if (l.getNombre()==nombreBusqueda) {
+            if (l.getNombre().equalsIgnoreCase(nombreBusqueda)) {
                 System.out.println(l.toString());
             }
         }
@@ -202,7 +202,7 @@ public class Tienda extends Entrada_Salida{
     public static void busquedaCategoria(){
         String categoriaBusqueda = recibirCategoria();
         for (Luchador l : luchadores.values()) {
-            if (l.getCategoria()==categoriaBusqueda) {
+            if (l.getCategoria().equalsIgnoreCase(categoriaBusqueda)) {
                 controladorObjetos(l);
             }
         }
@@ -277,13 +277,13 @@ public class Tienda extends Entrada_Salida{
         eleccion = devolverInt();
         switch (eleccion) {
             case 1:
-                registrarNuevaCarta(); //De momento acabado
+                registrarNuevaCarta(); //Acabado
                 break;
             case 2:
-                buscarProducto();
+                buscarProducto();//Acabado
                 break;
             case 3:
-                eliminarCarta();
+                eliminarCarta();//Acabado
                 break;
             case 4:
                 
