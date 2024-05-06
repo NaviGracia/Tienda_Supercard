@@ -45,13 +45,13 @@ public class Luchador extends Carta{
     }
 
     public void setCarisma(int carisma) {
-        this.carisma = carintisma;
+        this.carisma = carisma;
     }
 
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        return super.getN_carta() + "\t" + super.getNombre() + "\t" + super.getCategoria() + "\t" + fuerza + "\t" + resistencia + "\t" + velocidad + "\t" + carisma + "\t" + super.getPrecio() + "€ \t" + super.getStock();
+        return super.toString() + "\t" + fuerza + "\t" + resistencia + "\t" + velocidad + "\t" + carisma + "\t" + super.getPrecio() + "€ \t" + super.getStock();
     }
 
     

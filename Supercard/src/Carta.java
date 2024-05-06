@@ -60,5 +60,11 @@ public class Carta{
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return n_carta + "\t" + nombre + "\t" + categoria;
+    }
     
 }

@@ -21,11 +21,14 @@ public class Tienda extends Entrada_Salida{
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+    
+    public static Connection conexion = null;
+    public static Statement st = null;
 
     static HashMap<Integer, Luchador> luchadores = new HashMap<Integer, Luchador>();
 
     //Conversión de BD a objetos
-    public static String conversionCartas(Statement st){
+    public static String conversionCartas(){
         try {
             ResultSet rs = st.executeQuery("SELECT ca.n_carta, ca.nombre, ca.categoria, ca.precio, ca.stock, l.fuerza, l.resistencia, l.velocidad, l.carisma FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta");
             while (rs.next()) {
@@ -50,9 +53,9 @@ public class Tienda extends Entrada_Salida{
         return devolverString();
     }
 
-    public static String recibirCategoria(Statement st, Connection conexion){
+    public static String recibirCategoria(){
         System.out.println("Inserte la categoría:");
-        mostrarCategorias(st, conexion);
+        mostrarCategorias();
         return devolverString();
     }
     
@@ -86,13 +89,25 @@ public class Tienda extends Entrada_Salida{
     }
 
     //Controlador de Resultados
-    public static String controladorResultados(){
+    public static String controladorContinuar(){
         System.out.println("Presione Enter para continuar.");
         return devolverString();
     }
 
+    public static void controladorObjetos(Luchador l){
+        int controladorCatalogo = 0;
+        if (controladorCatalogo == 6) {
+            System.out.println(l.toString());
+            controladorContinuar();
+            controladorCatalogo = 0;
+        } else{
+            System.out.println(l.toString());
+            controladorCatalogo++;
+        }
+    }
+
     //Menu Único de la tabla de BD Categoria
-    public static void mostrarCategorias(Statement st, Connection conexion){//Para las busquedas
+    public static void mostrarCategorias(){
         try {
             ResultSet rs = st.executeQuery("SELECT categoria FROM categoria");
             while (rs.next()) {
@@ -104,17 +119,17 @@ public class Tienda extends Entrada_Salida{
         }
     }
     //Insertar Datos a la BD
-    public static void insertarCartaBD(int nCarta, Statement st, Connection conexion) throws Exception{
+    public static void insertarCartaBD(int nCarta) throws Exception{
         String sql = "INSERT INTO carta VALUES(?, ?, ?, ?, 100)";
         PreparedStatement sentencia = conexion.prepareStatement(sql);
         sentencia.setInt(1, nCarta);
         sentencia.setString(2, recibirNombreCarta());
-        sentencia.setString(3, recibirCategoria(st, conexion));
+        sentencia.setString(3, recibirCategoria());
         sentencia.setDouble(4, recibirPrecio());
         sentencia.executeUpdate();
     }
 
-    public static void insertarLuchadorBD(int nCarta, Statement st, Connection conexion) throws Exception{
+    public static void insertarLuchadorBD(int nCarta) throws Exception{
         String sql = "INSERT INTO luchador VALUES(?, ?, ?, ?, ?)";
         PreparedStatement sentencia = conexion.prepareStatement(sql);
         sentencia.setInt(1, nCarta);
@@ -125,7 +140,7 @@ public class Tienda extends Entrada_Salida{
         sentencia.executeUpdate();
     }
 
-    public static void registrarNuevaCartaArrayList(int nCarta, Statement st){
+    public static void registrarNuevaCartaArrayList(int nCarta){
         try {
             ResultSet rs = st.executeQuery("SELECT ca.n_carta, ca.nombre, ca.categoria, ca.precio, ca.stock, l.fuerza, l.resistencia, l.velocidad, l.carisma FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta WHERE ca.n_carta = " + nCarta);
             while (rs.next()) {
@@ -137,11 +152,12 @@ public class Tienda extends Entrada_Salida{
         }
     }
 
-    public static void registrarNuevaCarta(Connection conexion, Statement st){
+    public static void registrarNuevaCarta(){
         try {
             int nCarta = recibirNumCarta();
-            insertarCartaBD(nCarta, st, conexion);
-            insertarLuchadorBD(nCarta, st, conexion);
+            insertarCartaBD(nCarta);
+            insertarLuchadorBD(nCarta);
+            registrarNuevaCartaArrayList(nCarta);
             System.out.println("Carta registrada correctamente");
         } catch (Exception e) {
             // TODO: handle exception
@@ -150,25 +166,50 @@ public class Tienda extends Entrada_Salida{
     }
 
     //Búsqueda de Productos
-    public static void buscarProducto(Statement st, Connection conexion) throws Exception{
-        System.out.println("Menú de Búsqueda: \n1. Nº Carta \n2. Nombre \n3. Categoría");
-        //Hacer la consulta
+    public static void buscarProducto() throws Exception{
+        System.out.println("Menú de Búsqueda: \n1. Nº Carta (Mediante HashMap) \n2. Nombre \n3. Categoría");
+        switch (devolverInt()) {
+            case 1:
+                busquedaNCarta();
+                break;
+            case 2:
+                busquedaNombre();
+                break;
+            case 3:
+                busquedaCategoria();
+                break;
+        }
     }
 
     public static void busquedaNCarta(){
-        
+        int nCartaBusqueda = recibirNumCarta();
+        for (Luchador l : luchadores.values()) {
+            if (l.getN_carta()==nCartaBusqueda) {
+                System.out.println(l.toString());
+            }
+        }
     }
 
     public static void busquedaNombre(){
-        
+        String nombreBusqueda = recibirNombreCarta();
+        for (Luchador l : luchadores.values()) {
+            if (l.getNombre()==nombreBusqueda) {
+                System.out.println(l.toString());
+            }
+        }
     }
 
     public static void busquedaCategoria(){
-        
+        String categoriaBusqueda = recibirCategoria();
+        for (Luchador l : luchadores.values()) {
+            if (l.getCategoria()==categoriaBusqueda) {
+                controladorObjetos(l);
+            }
+        }
     }
 
-    //Eliminación de Cartas (*Aquí estoy*) (ArrayList {Como iterar})
-    public static String eliminarCarta(Connection conexion){
+    //Eliminación de Cartas 
+    public static void eliminarCarta(){
         PreparedStatement sentencia = null;
         String sql = "DELETE FROM carta WHERE n_carta = ?";
         try {
@@ -177,28 +218,28 @@ public class Tienda extends Entrada_Salida{
             luchadores.remove(n_carta_eliminar);
             sentencia.setInt(1, n_carta_eliminar);
             sentencia.executeQuery();
-            return "Carta eliminada correctamente";
+            System.out.println("Carta eliminada correctamente");
         } catch (Exception e) {
             // TODO: handle exception
-            return "Fallo en la eliminación de cartas: " + e;
+            System.out.println("Fallo en la eliminación de cartas: " + e);
 
         }
     }
 
-    public static void mostrarCatalogo(Statement st) throws Exception{
+    public static void mostrarCatalogo() throws Exception{
         ResultSet rs = st.executeQuery("SELECT n_carta, nombre, categoria, precio, stock FROM catalogo_cartas ORDER BY n_carta");
         int controladorCatalogo = 0;
         while (rs.next()) {
             if (controladorCatalogo == 6) {
                 toStringCarta(rs);
-                controladorResultados();
+                controladorContinuar();
                 controladorCatalogo = 0;
             } else{
                 toStringCarta(rs);
                 controladorCatalogo++;
             }
         }
-        controladorResultados();
+        controladorContinuar();
     }
 
     public static void mostrarCartas() throws Exception{
@@ -206,15 +247,9 @@ public class Tienda extends Entrada_Salida{
         System.out.println(ANSI_RED + "NºCarta\tNombre \tCategoría \tFuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
         int controladorCatalogo = 0;
         for(Luchador l : luchadores.values()){
-            if (controladorCatalogo == 6) {
-                System.out.println(l.toString());
-                controladorResultados();
-                controladorCatalogo = 0;
-            } else{
-                System.out.println(l.toString());
-                controladorCatalogo++;
-            }
+            controladorObjetos(l);
         }
+        controladorContinuar();
     }
 
     
@@ -231,30 +266,30 @@ public class Tienda extends Entrada_Salida{
         System.out.println("Error en registro driver");
     }
 
-    Connection conexion = null;
+    
     conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Supercard", "dam", "dam");
-    Statement st = conexion.createStatement();
-    System.out.println(conversionCartas(st));
+    st = conexion.createStatement();
+    System.out.println(conversionCartas());
 
     int eleccion;
     do {    
-        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta" + "\n 2. Buscar Carta" + "\n 3. Eliminar Carta" + "\n 4. Actualizar Carta" + "\n 5. Mostrar Catalogo" + "\n 6. Mostrar Cartas (Solo Luchadores) (Con sus Características)" +  "\n 7. Salir" + ANSI_RESET);
+        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + "\n 6. Mostrar Cartas (HashMap) (Con sus Características)" +  "\n 7. Salir" + ANSI_RESET);
         eleccion = devolverInt();
         switch (eleccion) {
             case 1:
-                registrarNuevaCarta(conexion, st); //De momento acabado
+                registrarNuevaCarta(); //De momento acabado
                 break;
             case 2:
-                
+                buscarProducto();
                 break;
             case 3:
-                System.out.println(eliminarCarta(conexion));
+                eliminarCarta();
                 break;
             case 4:
                 
                 break;
             case 5:
-                mostrarCatalogo(st); //Acabado
+                mostrarCatalogo(); //Acabado
                 break;
             case 6:
                 mostrarCartas();
