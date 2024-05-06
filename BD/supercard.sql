@@ -11,9 +11,19 @@ CREATE TABLE IF NOT EXISTS public.carta
 	CONSTRAINT fk_categoria_carta FOREIGN KEY(categoria) REFERENCES categoria(categoria)
 );
 
-INSERT INTO carta VALUES(1, 'Roman Reigns', 'Wrestlemania 40', 5.99);
-INSERT INTO carta VALUES(124, 'Roman Reigns', 'Tundra', 3.99);
-DELETE FROM carta WHERE n_carta = 124
+CREATE OR REPLACE TRIGGER establecer_stock_carta
+AFTER INSERT ON carta
+FOR EACH ROW
+EXECUTE FUNCTION establecer_stock();
+
+CREATE OR REPLACE FUNCTION establecer_stock()
+RETURNS TRIGGER AS $$
+BEGIN
+UPDATE carta SET stock = 100 WHERE n_carta = NEW.n_carta;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 SELECT * FROM catalogo_cartas
 
 /*------------------------------------------------------------------------------------*/
