@@ -155,6 +155,18 @@ public class Tienda extends Entrada_Salida{
         //Hacer la consulta
     }
 
+    public static void busquedaNCarta(){
+        
+    }
+
+    public static void busquedaNombre(){
+        
+    }
+
+    public static void busquedaCategoria(){
+        
+    }
+
     //Eliminación de Cartas (*Aquí estoy*) (ArrayList {Como iterar})
     public static String eliminarCarta(Connection conexion){
         PreparedStatement sentencia = null;
