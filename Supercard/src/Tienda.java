@@ -273,7 +273,7 @@ public class Tienda extends Entrada_Salida{
 
     int eleccion;
     do {    
-        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + "\n 6. Mostrar Cartas (HashMap) (Con sus Características)" +  "\n 7. Salir" + ANSI_RESET);
+        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + "\n 6. Mostrar Cartas (HashMap) (Con sus Características)" + "\n 7. Guardar catalogo en fichero (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Salir" + ANSI_RESET);
         eleccion = devolverInt();
         switch (eleccion) {
             case 1:
@@ -292,15 +292,18 @@ public class Tienda extends Entrada_Salida{
                 mostrarCatalogo(); //Acabado
                 break;
             case 6:
-                mostrarCartas();
+                mostrarCartas(); //Acabado
                 break;
-            case 7: 
+            case 7:
+
+                break;
+            case 8: 
                 System.out.println("Saliendo del Programa");
                 break;
             default:
                 break;
         }
-    } while (eleccion!=7);
+    } while (eleccion!=8);
     System.out.println("Saliendo del Sistema Gestor de la Tienda Supercard.");
     }
 }
