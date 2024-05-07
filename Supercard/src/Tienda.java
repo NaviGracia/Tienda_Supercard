@@ -252,6 +252,13 @@ public class Tienda extends Entrada_Salida{
         controladorContinuar();
     }
 
+    public static void aplanarLuchadores(){
+        ArrayList<Luchador> copiaLuchadores = new ArrayList<>();
+        for(Luchador l : luchadores.values()){
+            copiaLuchadores.
+        }
+    }
+
     
 
 
@@ -273,7 +280,7 @@ public class Tienda extends Entrada_Salida{
 
     int eleccion;
     do {    
-        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + "\n 6. Mostrar Cartas (HashMap) (Con sus Características)" + "\n 7. Guardar catalogo en fichero (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Salir" + ANSI_RESET);
+        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + "\n 6. Mostrar Cartas (Con sus Características)(HashMap)" + "\n 7. Guardar catalogo en fichero (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Salir" + ANSI_RESET);
         eleccion = devolverInt();
         switch (eleccion) {
             case 1:

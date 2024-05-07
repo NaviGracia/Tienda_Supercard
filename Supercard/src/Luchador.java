@@ -6,14 +6,16 @@ public class Luchador extends Carta{
     private int resistencia;
     private int velocidad;
     private int carisma;
+    private int stock;
     
     public Luchador(int n_carta, String nombre, String categoria, double precio, int stock, int fuerza, int resistencia,
             int velocidad, int carisma) {
-        super(n_carta, nombre, categoria, precio, stock);
+        super(n_carta, nombre, categoria, precio);
         this.fuerza = fuerza;
         this.resistencia = resistencia;
         this.velocidad = velocidad;
         this.carisma = carisma;
+        this.stock = stock;
     }
 
     public int getFuerza() {
@@ -54,7 +56,10 @@ public class Luchador extends Carta{
         return super.toString() + "\t" + fuerza + "\t" + resistencia + "\t" + velocidad + "\t" + carisma + "\t" + super.getPrecio() + "€ \t" + super.getStock();
     }
 
-    
+    @Override
+    public int venderCarta(){
+        return stock - 1;
+    }
 
     
 }
