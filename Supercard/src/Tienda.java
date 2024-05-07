@@ -255,8 +255,9 @@ public class Tienda extends Entrada_Salida{
     public static void aplanarLuchadores(){
         ArrayList<Luchador> copiaLuchadores = new ArrayList<>();
         for(Luchador l : luchadores.values()){
-            copiaLuchadores.
+            copiaLuchadores.add(l);
         }
+        
     }
 
     
