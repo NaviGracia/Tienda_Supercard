@@ -226,6 +226,8 @@ public class Tienda extends Entrada_Salida{
         }
     }
 
+    public static void 
+
     public static void mostrarCatalogo() throws Exception{
         ResultSet rs = st.executeQuery("SELECT n_carta, nombre, categoria, precio, stock FROM catalogo_cartas ORDER BY n_carta");
         int controladorCatalogo = 0;
@@ -257,7 +259,7 @@ public class Tienda extends Entrada_Salida{
         for(Luchador l : luchadores.values()){
             copiaLuchadores.add(l);
         }
-        
+
     }
 
     
