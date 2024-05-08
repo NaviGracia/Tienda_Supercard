@@ -53,7 +53,7 @@ public class Luchador extends Carta{
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        return super.toString() + "\t" + fuerza + "\t" + resistencia + "\t" + velocidad + "\t" + carisma + "\t" + super.getPrecio() + "€ \t" + super.getStock();
+        return super.toString() + "\t" + fuerza + "\t" + resistencia + "\t" + velocidad + "\t" + carisma + "\t" + super.getPrecio() + "€ \t" + stock;
     }
 
     @Override

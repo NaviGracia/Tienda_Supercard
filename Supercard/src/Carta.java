@@ -49,14 +49,6 @@ abstract class Carta implements ModificacionesPrecio{
         this.precio = precio;
     }
 
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
     @Override
     public String toString() {
         // TODO Auto-generated method stub

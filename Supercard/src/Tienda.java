@@ -4,6 +4,7 @@
 * @author Ivan García
 * @version 1.0, 2024/04/22
 */
+import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.io.*;
 
 
 public class Tienda extends Entrada_Salida{
@@ -20,25 +21,25 @@ public class Tienda extends Entrada_Salida{
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
-    
-    public static Connection conexion = null;
+    publicatch (SQLException e) {
+        // TODO: handle exception
+        throw new ExcepcionSQL("Ocurrió un error de SQL", e);
+    }c static Connection conexion = null;
     public static Statement st = null;
 
     static HashMap<Integer, Luchador> luchadores = new HashMap<Integer, Luchador>();
 
     //Conversión de BD a objetos
-    public static String conversionCartas(){
+    public static void conversionCartas(){
         try {
             ResultSet rs = st.executeQuery("SELECT ca.n_carta, ca.nombre, ca.categoria, ca.precio, ca.stock, l.fuerza, l.resistencia, l.velocidad, l.carisma FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta");
             while (rs.next()) {
                 luchadores.put(rs.getInt(1), new Luchador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9)));
             }
-            return "Cartas cargadas correctamente";
-        } catch (Exception e) {
-            // TODO: handle exception
-            String error = "Error en la conversion de cartas: " + e;
-            return error;
+            System.out.println("Cartas cargadas correctamente");
+        } catch (SQLException e) {
+            // Lanzar tu excepción personalizada
+            System.out.println("Ocurrió un error de SQL"+ e);
         }
     }
 
@@ -226,7 +227,6 @@ public class Tienda extends Entrada_Salida{
         }
     }
 
-    public static void 
 
     public static void mostrarCatalogo() throws Exception{
         ResultSet rs = st.executeQuery("SELECT n_carta, nombre, categoria, precio, stock FROM catalogo_cartas ORDER BY n_carta");
@@ -247,7 +247,6 @@ public class Tienda extends Entrada_Salida{
     public static void mostrarCartas() throws Exception{
         //Arreglar Tabulaciones
         System.out.println(ANSI_RED + "NºCarta\tNombre \tCategoría \tFuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
-        int controladorCatalogo = 0;
         for(Luchador l : luchadores.values()){
             controladorObjetos(l);
         }
@@ -259,7 +258,13 @@ public class Tienda extends Entrada_Salida{
         for(Luchador l : luchadores.values()){
             copiaLuchadores.add(l);
         }
-
+        FileOutputStream fos
+        try{
+            
+        }catch(Exception e){
+            System.out.println("Error en el aplanamiento de Luchadores: " + e);
+        }
+        
     }
 
     
@@ -275,6 +280,7 @@ public class Tienda extends Entrada_Salida{
         // TODO: handle exception
         System.out.println("Error en registro driver");
     }
+    
 
     
     conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Supercard", "dam", "dam");
@@ -305,7 +311,7 @@ public class Tienda extends Entrada_Salida{
                 mostrarCartas(); //Acabado
                 break;
             case 7:
-
+                aplanarLuchadores();
                 break;
             case 8: 
                 System.out.println("Saliendo del Programa");
