@@ -60,6 +60,4 @@ public class Luchador extends Carta{
     public int venderCarta(){
         return stock - 1;
     }
-
-    
 }

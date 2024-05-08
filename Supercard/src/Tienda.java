@@ -21,10 +21,8 @@ public class Tienda extends Entrada_Salida{
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RED = "\u001B[31m";
-    publicatch (SQLException e) {
-        // TODO: handle exception
-        throw new ExcepcionSQL("Ocurrió un error de SQL", e);
-    }c static Connection conexion = null;
+    
+    public static Connection conexion = null;
     public static Statement st = null;
 
     static HashMap<Integer, Luchador> luchadores = new HashMap<Integer, Luchador>();
@@ -141,11 +139,12 @@ public class Tienda extends Entrada_Salida{
         sentencia.executeUpdate();
     }
 
-    public static void registrarNuevaCartaArrayList(int nCarta){
+    public static void registrarNuevaCartaHashMap(int nCarta){
         try {
             ResultSet rs = st.executeQuery("SELECT ca.n_carta, ca.nombre, ca.categoria, ca.precio, ca.stock, l.fuerza, l.resistencia, l.velocidad, l.carisma FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta WHERE ca.n_carta = " + nCarta);
             while (rs.next()) {
                 luchadores.put(rs.getInt(1), new Luchador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9)));
+                
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -158,7 +157,7 @@ public class Tienda extends Entrada_Salida{
             int nCarta = recibirNumCarta();
             insertarCartaBD(nCarta);
             insertarLuchadorBD(nCarta);
-            registrarNuevaCartaArrayList(nCarta);
+            registrarNuevaCartaHashMap(nCarta);
             System.out.println("Carta registrada correctamente");
         } catch (Exception e) {
             // TODO: handle exception
@@ -227,6 +226,49 @@ public class Tienda extends Entrada_Salida{
         }
     }
 
+    public static void menuActualizarCarta(){
+        System.out.println("Introduzca el nº de la carta que desea actualizar:");
+        int cartaActualizar = devolverInt();
+        int eleccion;
+        do{
+            System.out.println(ANSI_RED + "Que atributo desea modificar?" + ANSI_RESET + ANSI_CYAN +  "\n 1. Nombre" + "\n 2. Categoría" + "\n 3. " + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + "\n 6. Mostrar Cartas (Con sus Características)(HashMap)" + "\n 7. Guardar catalogo en fichero (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Salir" + ANSI_RESET);
+        eleccion = devolverInt();
+        switch (eleccion) {
+            case 1:
+                
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                
+                break;
+            case 5:
+
+                break;
+            case 6:
+
+                break;
+            case 7:
+
+                break;
+            case 8: 
+                System.out.println("Volviendo al Menú Principal");
+                break;
+            default:
+                break;
+        }
+        }while(eleccion!=8);
+    }
+
+    public static void actualizarCarta(){
+        String sql = "UPDATE carta SET ";
+    }
+
+
 
     public static void mostrarCatalogo() throws Exception{
         ResultSet rs = st.executeQuery("SELECT n_carta, nombre, categoria, precio, stock FROM catalogo_cartas ORDER BY n_carta");
@@ -246,9 +288,17 @@ public class Tienda extends Entrada_Salida{
 
     public static void mostrarCartas() throws Exception{
         //Arreglar Tabulaciones
-        System.out.println(ANSI_RED + "NºCarta\tNombre \tCategoría \tFuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
-        for(Luchador l : luchadores.values()){
-            controladorObjetos(l);
+        System.out.println(ANSI_RED + "NºCarta \tNombre \tCategoría \tFuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
+        int controladorSalto = 0;
+        for(int x = 1; x > 0; x++){
+            if(controladorSalto > 6){
+                System.out.println(luchadores.get(x));
+                controladorSalto = 0;
+                controladorContinuar();
+            }else{
+                System.out.println(luchadores.get(x));
+                controladorSalto++;
+            }
         }
         controladorContinuar();
     }
@@ -258,7 +308,6 @@ public class Tienda extends Entrada_Salida{
         for(Luchador l : luchadores.values()){
             copiaLuchadores.add(l);
         }
-        FileOutputStream fos
         try{
             
         }catch(Exception e){
@@ -285,8 +334,7 @@ public class Tienda extends Entrada_Salida{
     
     conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Supercard", "dam", "dam");
     st = conexion.createStatement();
-    System.out.println(conversionCartas());
-
+    conversionCartas();
     int eleccion;
     do {    
         System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + "\n 6. Mostrar Cartas (Con sus Características)(HashMap)" + "\n 7. Guardar catalogo en fichero (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Salir" + ANSI_RESET);
