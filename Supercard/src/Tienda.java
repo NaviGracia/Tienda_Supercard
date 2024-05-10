@@ -83,6 +83,11 @@ public class Tienda extends Entrada_Salida{
         return devolverInt();
     }
 
+    public static int recibirStock(){
+        System.out.println("Inserte el stock de la carta:");
+        return devolverInt();
+    }
+
     public static void toStringCarta(ResultSet rs) throws Exception{
         System.out.println(ANSI_CYAN + rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getDouble(4) + "€ " + rs.getInt(5) + ANSI_RESET);
     }
@@ -226,25 +231,25 @@ public class Tienda extends Entrada_Salida{
         }
     }
 
-    public static void menuActualizarCarta(){
+    public static void menuActualizarCarta() throws Exception{
         System.out.println("Introduzca el nº de la carta que desea actualizar:");
         int cartaActualizar = devolverInt();
         int eleccion;
         do{
-            System.out.println(ANSI_RED + "Que atributo desea modificar?" + ANSI_RESET + ANSI_CYAN +  "\n 1. Nombre" + "\n 2. Categoría" + "\n 3. " + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + "\n 6. Mostrar Cartas (Con sus Características)(HashMap)" + "\n 7. Guardar catalogo en fichero (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Salir" + ANSI_RESET);
+            System.out.println(ANSI_RED + "Que atributo desea modificar?" + ANSI_RESET + ANSI_CYAN +  "\n 1. Nombre \n 2. Categoría \n 3. Precio \n 4. Stock \n 5. Fuerza \n 6. Resistencia \n 7. Velocidad \n 8. Carisma \n 9. Salir"  + ANSI_RESET);
         eleccion = devolverInt();
         switch (eleccion) {
             case 1:
-                
+                actualizarCartaBD("nombre", cartaActualizar);
                 break;
             case 2:
-                
+                actualizarCartaBD("categoria", cartaActualizar);
                 break;
             case 3:
-                
+                actualizarCartaBD("precio", cartaActualizar);
                 break;
             case 4:
-                
+                actualizarCartaBD("stock", cartaActualizar);
                 break;
             case 5:
 
@@ -256,19 +261,42 @@ public class Tienda extends Entrada_Salida{
 
                 break;
             case 8: 
+                
+                break;
+            case 9:
                 System.out.println("Volviendo al Menú Principal");
                 break;
-            default:
-                break;
         }
-        }while(eleccion!=8);
+        }while(eleccion!=9);
     }
 
-    public static void actualizarCarta(){
-        String sql = "UPDATE carta SET ";
+    public static void actualizarCartaBD(String atributo, int cartaActualizar) throws Exception{
+        String sql = "UPDATE carta SET ? = ? WHERE n_carta = ?";
+        PreparedStatement sentenciaSQL = conexion.prepareStatement(sql);
+        sentenciaSQL.setString(1, atributo);
+        switch(atributo){
+            case "nombre":
+                sentenciaSQL.setString(2, recibirNombreCarta());
+                break;
+            case "categoria":
+                sentenciaSQL.setString(2, recibirCategoria());
+                break;
+            case "precio":
+                sentenciaSQL.setDouble(2, recibirPrecio());
+                break;
+            case "stock":
+                sentenciaSQL.setInt(2, recibirStock());
+                break;
+        };
+        sentenciaSQL.setInt(3, cartaActualizar);
     }
 
-
+    public static void actualizarLuchadorBD(String atributo, int cartaActualizar) throws Exception{
+        String sql = "UPDATE luchador SET ? = ? WHERE n_carta = ?";
+        PreparedStatement sentenciaSQL = conexion.prepareStatement(sql);
+        sentenciaSQL.setString(1, atributo);
+        sentenciaSQL.setInt(2, devolverInt);
+    }
 
     public static void mostrarCatalogo() throws Exception{
         ResultSet rs = st.executeQuery("SELECT n_carta, nombre, categoria, precio, stock FROM catalogo_cartas ORDER BY n_carta");
