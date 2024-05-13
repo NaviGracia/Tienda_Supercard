@@ -172,7 +172,7 @@ public class Tienda extends Entrada_Salida{
 
     //Búsqueda de Productos
     public static void buscarProducto() throws Exception{
-        System.out.println("Menú de Búsqueda: \n1. Nº Carta (Mediante HashMap) \n2. Nombre \n3. Categoría");
+        System.out.println("Menú de Búsqueda: \n1. Nº Carta (Mediante HashMap) \1n2. Nombre \n3. Categoría");
         switch (devolverInt()) {
             case 1:
                 busquedaNCarta();
