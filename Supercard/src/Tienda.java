@@ -387,7 +387,7 @@ public class Tienda extends Entrada_Salida{
                 System.out.println("Saliendo del Programa");
                 break;
             case 9:
-
+                cargarCopia();
                 break;
             default:
                 break;
