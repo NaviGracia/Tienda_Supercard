@@ -384,10 +384,10 @@ public class Tienda extends Entrada_Salida{
                 aplanarLuchadores();
                 break;
             case 8: 
-                System.out.println("Saliendo del Programa");
+                cargarCopia();
                 break;
             case 9:
-                cargarCopia();
+                System.out.println("Saliendo del Programa");
                 break;
             default:
                 break;
