@@ -252,22 +252,10 @@ public class Tienda extends Entrada_Salida{
                 actualizarCartaBD("stock", cartaActualizar);
                 break;
             case 5:
-
-                break;
-            case 6:
-
-                break;
-            case 7:
-
-                break;
-            case 8: 
-                
-                break;
-            case 9:
                 System.out.println("Volviendo al Menú Principal");
                 break;
         }
-        }while(eleccion!=9);
+        }while(eleccion!=5);
     }
 
     public static void actualizarCartaBD(String atributo, int cartaActualizar) throws Exception{
@@ -295,7 +283,7 @@ public class Tienda extends Entrada_Salida{
         String sql = "UPDATE luchador SET ? = ? WHERE n_carta = ?";
         PreparedStatement sentenciaSQL = conexion.prepareStatement(sql);
         sentenciaSQL.setString(1, atributo);
-        sentenciaSQL.setInt(2, devolverInt);
+        sentenciaSQL.setInt(2, devolverInt());
     }
 
     public static void mostrarCatalogo() throws Exception{
@@ -315,7 +303,6 @@ public class Tienda extends Entrada_Salida{
     }
 
     public static void mostrarCartas() throws Exception{
-        //Arreglar Tabulaciones
         System.out.println(ANSI_RED + "NºCarta \tNombre \tCategoría \tFuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
         int controladorSalto = 0;
         for(int x = 1; x > 0; x++){
@@ -337,16 +324,21 @@ public class Tienda extends Entrada_Salida{
             copiaLuchadores.add(l);
         }
         try{
-            
+            FileOutputStream fout = new FileOutputStream("Copias_Catalogo/CopiaCatalogo.txt");
+            ObjectOutputStream out = new ObjectOutputStream(fout);
+            out.writeObject(copiaLuchadores);
+            System.out.println("Copia creada con éxito");
         }catch(Exception e){
             System.out.println("Error en el aplanamiento de Luchadores: " + e);
         }
-        
     }
 
-    
-
-
+    public static void cargarCopia() throws Exception{
+        FileInputStream fis = new FileInputStream("Copias_Catalogo/CopiaCatalogo.txt");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        //Sustituir todo el arraylist
+        luchadores.
+    }
 
 
     public static void main(String[] args) throws Exception {
@@ -365,26 +357,28 @@ public class Tienda extends Entrada_Salida{
     conversionCartas();
     int eleccion;
     do {    
-        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + "\n 6. Mostrar Cartas (Con sus Características)(HashMap)" + "\n 7. Guardar catalogo en fichero (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Salir" + ANSI_RESET);
+        System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + 
+        "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + 
+        "\n 6. Mostrar Cartas (Con sus Características)(HashMap)" + "\n 7. Realizar Copia del Catalogo (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Cargar Copia Catalogo" + "\n 9. Salir" + ANSI_RESET);
         eleccion = devolverInt();
         switch (eleccion) {
             case 1:
-                registrarNuevaCarta(); //Acabado
+                registrarNuevaCarta(); 
                 break;
             case 2:
-                buscarProducto();//Acabado
+                buscarProducto();
                 break;
             case 3:
-                eliminarCarta();//Acabado
+                eliminarCarta();
                 break;
             case 4:
                 
                 break;
             case 5:
-                mostrarCatalogo(); //Acabado
+                mostrarCatalogo(); 
                 break;
             case 6:
-                mostrarCartas(); //Acabado
+                mostrarCartas();
                 break;
             case 7:
                 aplanarLuchadores();
@@ -392,10 +386,13 @@ public class Tienda extends Entrada_Salida{
             case 8: 
                 System.out.println("Saliendo del Programa");
                 break;
+            case 9:
+
+                break;
             default:
                 break;
         }
-    } while (eleccion!=8);
+    } while (eleccion!=9);
     System.out.println("Saliendo del Sistema Gestor de la Tienda Supercard.");
     }
 }
