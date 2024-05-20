@@ -1,6 +1,8 @@
 /**
- * Luchador
- */
+* Clase del Objeto Luchador
+* @author Ivan García
+* @version 1.0, 2024/04/22
+*/
 public class Luchador extends Carta{
     private int fuerza;
     private int resistencia;

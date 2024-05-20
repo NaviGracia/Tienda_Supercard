@@ -1,5 +1,5 @@
 /**
-* Codigo del main de la tienda
+* Codigo main de la tienda
 * Main de la tienda Supercard
 * @author Ivan García
 * @version 1.0, 2024/04/22

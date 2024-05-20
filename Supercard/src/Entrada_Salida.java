@@ -1,3 +1,8 @@
+/**
+* Clase de entrada|salida de valores
+* @author Ivan García
+* @version 1.0, 2024/04/22
+*/
 import java.util.Scanner;
 
 /**
