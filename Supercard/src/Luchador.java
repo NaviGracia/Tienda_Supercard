@@ -3,6 +3,9 @@
 * @author Ivan García
 * @version 1.0, 2024/04/22
 */
+
+import java.io.Serializable;
+
 public class Luchador extends Carta{
     private int fuerza;
     private int resistencia;

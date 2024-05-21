@@ -325,9 +325,7 @@ public class Tienda extends Entrada_Salida{
         try{
             FileOutputStream fout = new FileOutputStream("src/CopiasCatalogo/CopiaCatalogo.txt");
             ObjectOutputStream out = new ObjectOutputStream(fout);
-            for(Luchador l : copiaLuchadores){
-                out.writeObject(l);
-            }
+            out.writeObject(copiaLuchadores);
             out.close();
             System.out.println("Copia creada con éxito");
         }catch(Exception e){
