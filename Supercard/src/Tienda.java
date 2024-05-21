@@ -25,6 +25,7 @@ public class Tienda extends Entrada_Salida{
     public static Connection conexion = null;
     public static Statement st = null;
 
+    static ArrayList<Luchador> copiaLuchadores = new ArrayList<>();
     static HashMap<Integer, Luchador> luchadores = new HashMap<Integer, Luchador>();
 
     //Conversión de BD a objetos
@@ -172,7 +173,7 @@ public class Tienda extends Entrada_Salida{
 
     //Búsqueda de Productos
     public static void buscarProducto() throws Exception{
-        System.out.println("Menú de Búsqueda: \n1. Nº Carta (Mediante HashMap) \1n2. Nombre \n3. Categoría");
+        System.out.println("Menú de Búsqueda: \n1. Nº Carta (Mediante HashMap) \n2. Nombre \n3. Categoría");
         switch (devolverInt()) {
             case 1:
                 busquedaNCarta();
@@ -305,13 +306,12 @@ public class Tienda extends Entrada_Salida{
     public static void mostrarCartas() throws Exception{
         System.out.println(ANSI_RED + "NºCarta \tNombre \tCategoría \tFuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
         int controladorSalto = 0;
-        for(int x = 1; x > 0; x++){
+        for (HashMap.Entry<Integer, Luchador> entry : luchadores.entrySet()) {
+            System.out.println(entry.getValue().toString());
             if(controladorSalto > 6){
-                System.out.println(luchadores.get(x));
                 controladorSalto = 0;
                 controladorContinuar();
             }else{
-                System.out.println(luchadores.get(x));
                 controladorSalto++;
             }
         }
@@ -319,14 +319,16 @@ public class Tienda extends Entrada_Salida{
     }
 
     public static void aplanarLuchadores(){
-        ArrayList<Luchador> copiaLuchadores = new ArrayList<>();
         for(Luchador l : luchadores.values()){
             copiaLuchadores.add(l);
         }
         try{
-            FileOutputStream fout = new FileOutputStream("Copias_Catalogo/CopiaCatalogo.txt");
+            FileOutputStream fout = new FileOutputStream("src/CopiasCatalogo/CopiaCatalogo.txt");
             ObjectOutputStream out = new ObjectOutputStream(fout);
-            out.writeObject(copiaLuchadores);
+            for(Luchador l : copiaLuchadores){
+                out.writeObject(l);
+            }
+            out.close();
             System.out.println("Copia creada con éxito");
         }catch(Exception e){
             System.out.println("Error en el aplanamiento de Luchadores: " + e);
@@ -334,10 +336,27 @@ public class Tienda extends Entrada_Salida{
     }
 
     public static void cargarCopia() throws Exception{
-        FileInputStream fis = new FileInputStream("Copias_Catalogo/CopiaCatalogo.txt");
+        ArrayList<Luchador> copiaCargada = new ArrayList<>();
+        FileInputStream fis = new FileInputStream("CopiasCatalogo/CopiaCatalogo.txt");
         ObjectInputStream ois = new ObjectInputStream(fis);
         //Sustituir todo el arraylist
-        luchadores.
+        for(int posicion = 0; posicion<=copiaLuchadores.size(); posicion++){
+            copiaCargada.add((Luchador)ois.readObject());
+        }
+        for (HashMap.Entry<Integer, Luchador> entry : luchadores.entrySet()) {
+            boolean encontrado = false;
+            for(Luchador l : copiaCargada){
+                if(entry.getKey() == l.getN_carta()){
+                    luchadores.replace(l.getN_carta(), entry.getValue());
+                    encontrado = true;
+                }
+            }
+            if(encontrado == false){
+                luchadores.remove(entry.getKey());
+            }
+        }
+        ois.close();
+        System.out.println("Copia cargada");
     }
 
 
