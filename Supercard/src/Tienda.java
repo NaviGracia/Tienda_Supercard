@@ -334,13 +334,9 @@ public class Tienda extends Entrada_Salida{
     }
 
     public static void cargarCopia() throws Exception{
-        ArrayList<Luchador> copiaCargada = new ArrayList<>();
-        FileInputStream fis = new FileInputStream("CopiasCatalogo/CopiaCatalogo.txt");
+        FileInputStream fis = new FileInputStream("src/CopiasCatalogo/CopiaCatalogo.txt");
         ObjectInputStream ois = new ObjectInputStream(fis);
-        //Sustituir todo el arraylist
-        for(int posicion = 0; posicion<=copiaLuchadores.size(); posicion++){
-            copiaCargada.add((Luchador)ois.readObject());
-        }
+        ArrayList<Luchador> copiaCargada = (ArrayList<Luchador>) ois.readObject();
         for (HashMap.Entry<Integer, Luchador> entry : luchadores.entrySet()) {
             boolean encontrado = false;
             for(Luchador l : copiaCargada){

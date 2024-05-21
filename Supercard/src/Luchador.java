@@ -6,7 +6,7 @@
 
 import java.io.Serializable;
 
-public class Luchador extends Carta{
+public class Luchador extends Carta implements Serializable{
     private int fuerza;
     private int resistencia;
     private int velocidad;
