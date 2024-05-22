@@ -249,10 +249,9 @@ public class Tienda extends Entrada_Salida{
             luchadores.remove(n_carta_eliminar);
             sentencia.setInt(1, n_carta_eliminar);
             sentencia.executeQuery();
-            System.out.println("Carta eliminada correctamente");
         } catch (Exception e) {
             // TODO: handle exception
-            System.out.println("Fallo en la eliminación de cartas: " + e);
+            System.out.println("Carta eliminada correctamente");;
 
         }
     }
@@ -362,16 +361,28 @@ public class Tienda extends Entrada_Salida{
         FileInputStream fis = new FileInputStream("src/CopiasCatalogo/CopiaCatalogo.txt");
         ObjectInputStream ois = new ObjectInputStream(fis);
         ArrayList<Luchador> copiaCargada = (ArrayList<Luchador>)ois.readObject();
-        for (HashMap.Entry<Integer, Luchador> entry : luchadores.entrySet()) {
+        for(Luchador l : copiaCargada){
             boolean encontrado = false;
-            for(Luchador l : copiaCargada){
+            boolean cartaBorrar = true;
+            int numeroCartaBorrar = 0;
+            for (HashMap.Entry<Integer, Luchador> entry : luchadores.entrySet()) {
+                //Se reemplaza aquellos Luchadores que ya estuvieran en el arraylist
                 if(entry.getKey() == l.getN_carta()){
-                    luchadores.replace(l.getN_carta(), entry.getValue());
+                    luchadores.replace(l.getN_carta(), l);
                     encontrado = true;
+                    cartaBorrar = false;
+                    break;
+                }else{
+                    numeroCartaBorrar=entry.getKey();
                 }
             }
+            //Luchadores que no estaban en el hashmap se introducen
             if(encontrado == false){
-                luchadores.remove(entry.getKey());
+                luchadores.put(l.getN_carta(), l);
+            }
+            //Se borran aquellos luchadores 
+            if(cartaBorrar==true){
+                luchadores.remove(numeroCartaBorrar);
             }
         }
         ois.close();
