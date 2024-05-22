@@ -381,7 +381,6 @@ public class Tienda extends Entrada_Salida{
     st = conexion.createStatement();
     conversionCartas();
     int eleccion;
-    mostrarCartas();
     do {    
         System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + 
         "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + 
