@@ -304,7 +304,7 @@ public class Tienda extends Entrada_Salida{
     }
 
     public static void mostrarCartas() throws Exception{
-        System.out.println(ANSI_RED + "NºCarta \tNombre \tCategoría \tFuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
+        System.out.println(ANSI_RED + "NºCarta \tNombre \t\t\t\tCategoría \tFuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
         int controladorSalto = 0;
         for (HashMap.Entry<Integer, Luchador> entry : luchadores.entrySet()) {
             System.out.println(entry.getValue().toString());
@@ -381,6 +381,7 @@ public class Tienda extends Entrada_Salida{
     st = conexion.createStatement();
     conversionCartas();
     int eleccion;
+    mostrarCartas();
     do {    
         System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + 
         "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + 
@@ -411,9 +412,11 @@ public class Tienda extends Entrada_Salida{
                 break;
             case 8: 
                 cargarCopia();
+                controladorContinuar();
                 break;
             case 9:
                 insertarNuevaCategoria();
+                controladorContinuar();
                 break;
             case 10:
                 System.out.println("Saliendo del Programa");

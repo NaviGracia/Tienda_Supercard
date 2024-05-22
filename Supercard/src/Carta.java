@@ -56,7 +56,32 @@ abstract class Carta implements ModificacionesPrecio, Serializable{
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        return n_carta + "\t" + nombre + "\t" + categoria;
+        String frase = "";
+        for(int posicion = 0; posicion <=10; posicion++){
+            if(posicion == 0){
+                frase+= n_carta;
+                posicion+= Integer.toString(n_carta).length()-1;
+            }else{
+                frase+= " ";
+            }
+        }
+        for(int posicion = 0; posicion <=25; posicion++){
+            if(posicion == 0){
+                frase+= nombre;
+                posicion+= nombre.length()-1;
+            }else{
+                frase+= " ";
+            }
+        }
+        for(int posicion = 0; posicion <=20; posicion++){
+            if(posicion == 0){
+                frase+= categoria;
+                posicion+= categoria.length()-1;
+            }else{
+                frase+= " ";
+            }
+        }
+        return frase;
     }
 
     //Método Abstracto
