@@ -90,7 +90,32 @@ public class Tienda extends Entrada_Salida{
     }
 
     public static void toStringCarta(ResultSet rs) throws Exception{
-        System.out.println(ANSI_CYAN + rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getDouble(4) + "€ " + rs.getInt(5) + ANSI_RESET);
+        String frase = "";
+        for(int posicion = 0; posicion <=5; posicion++){
+            if(posicion == 0){
+                frase+= rs.getInt(1);
+                posicion+= Integer.toString(rs.getInt(1)).length()-1;
+            }else{
+                frase+= " ";
+            }
+        }
+        for(int posicion = 0; posicion <=20; posicion++){
+            if(posicion == 0){
+                frase+= rs.getString(2);
+                posicion+= rs.getString(2).length()-1;
+            }else{
+                frase+= " ";
+            }
+        }
+        for(int posicion = 0; posicion <=15; posicion++){
+            if(posicion == 0){
+                frase+= rs.getString(3);
+                posicion+= rs.getString(3).length()-1;
+            }else{
+                frase+= " ";
+            }
+        }
+        System.out.println(ANSI_CYAN + frase + "\t" + rs.getDouble(4) + "€\t" + rs.getInt(5) + ANSI_RESET);
     }
 
     //Controlador de Resultados
@@ -384,7 +409,7 @@ public class Tienda extends Entrada_Salida{
     do {    
         System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + 
         "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + 
-        "\n 6. Mostrar Cartas (Con sus Características)(HashMap)" + "\n 7. Realizar Copia del Catalogo (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Cargar Copia Catalogo" + 
+        "\n 6. Mostrar Cartas (Con sus Características)(HashMap)" + "\n 7. Realizar Copia del Catalogo (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Cargar Copia Catalogo(Solo en el HashMap)" + 
         "\n 9. Crear nueva categoría" + "\n 10. Salir" + ANSI_RESET);
         eleccion = devolverInt();
         switch (eleccion) {
@@ -408,9 +433,11 @@ public class Tienda extends Entrada_Salida{
                 break;
             case 7:
                 aplanarLuchadores();
+                controladorContinuar();
                 break;
             case 8: 
                 cargarCopia();
+                //Me falta cargar en la BD
                 controladorContinuar();
                 break;
             case 9:
