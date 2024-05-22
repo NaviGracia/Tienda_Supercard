@@ -109,7 +109,7 @@ INSERT INTO luchador VALUES(1, 21, 19, 18, 20)
 
 CREATE TABLE IF NOT EXISTS public.categoria(
 	categoria varchar(30) PRIMARY KEY,
-	fecha_lanzamiento date
+	fecha_lanzamiento varchar(40)
 );
 
 INSERT INTO categoria VALUES('Wrestlemania 40', '2024-03-27');
@@ -130,3 +130,5 @@ FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta
 UPDATE carta SET stock = 100 WHERE n_carta = 4
 
 UPDATE catalogo_cartas SET nombre = 'Cody Rhodes' WHERE n_carta = 2
+
+SELECT * FROM categoria

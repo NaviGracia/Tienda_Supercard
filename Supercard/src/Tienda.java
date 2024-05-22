@@ -336,7 +336,7 @@ public class Tienda extends Entrada_Salida{
     public static void cargarCopia() throws Exception{
         FileInputStream fis = new FileInputStream("src/CopiasCatalogo/CopiaCatalogo.txt");
         ObjectInputStream ois = new ObjectInputStream(fis);
-        ArrayList<Luchador> copiaCargada = (ArrayList<Luchador>) ois.readObject();
+        ArrayList<Luchador> copiaCargada = (ArrayList<Luchador>)ois.readObject();
         for (HashMap.Entry<Integer, Luchador> entry : luchadores.entrySet()) {
             boolean encontrado = false;
             for(Luchador l : copiaCargada){
@@ -351,6 +351,18 @@ public class Tienda extends Entrada_Salida{
         }
         ois.close();
         System.out.println("Copia cargada");
+    }
+
+    public static void insertarNuevaCategoria() throws Exception{
+        String sql = "INSERT INTO categoria VALUES(?, ?)";
+        PreparedStatement sentencia = conexion.prepareStatement(sql);
+        System.out.println("Inserte la nueva categoría:");
+        sentencia.setString(1, devolverString());
+        System.out.println("Inserte la fecha de lanzamiento:");
+        sentencia.setString(2, devolverString());
+        sentencia.executeUpdate();
+        System.out.println("Categoría Generada Correctamente");
+        controladorContinuar();
     }
 
 
@@ -372,7 +384,8 @@ public class Tienda extends Entrada_Salida{
     do {    
         System.out.println(ANSI_RED + "Bienvenido al Sistema Gestor de la Tienda Supercard. \n Que desea realizar: " + ANSI_RESET + ANSI_CYAN +  "\n 1. Registrar Nueva Carta (BD y HashMap)" + 
         "\n 2. Buscar Carta (HashMap)" + "\n 3. Eliminar Carta (BD y HashMap)" + "\n 4. Actualizar Carta (BD y HashMap)" + "\n 5. Mostrar Catalogo (BD)" + 
-        "\n 6. Mostrar Cartas (Con sus Características)(HashMap)" + "\n 7. Realizar Copia del Catalogo (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Cargar Copia Catalogo" + "\n 9. Salir" + ANSI_RESET);
+        "\n 6. Mostrar Cartas (Con sus Características)(HashMap)" + "\n 7. Realizar Copia del Catalogo (ArrayList + Aplanamiento + Ficheros)" + "\n 8. Cargar Copia Catalogo" + 
+        "\n 9. Crear nueva categoría" + "\n 10. Salir" + ANSI_RESET);
         eleccion = devolverInt();
         switch (eleccion) {
             case 1:
@@ -400,12 +413,15 @@ public class Tienda extends Entrada_Salida{
                 cargarCopia();
                 break;
             case 9:
+                insertarNuevaCategoria();
+                break;
+            case 10:
                 System.out.println("Saliendo del Programa");
                 break;
             default:
                 break;
         }
-    } while (eleccion!=9);
+    } while (eleccion!=10);
     System.out.println("Saliendo del Sistema Gestor de la Tienda Supercard.");
     }
 }

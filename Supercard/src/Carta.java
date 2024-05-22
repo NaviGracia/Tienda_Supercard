@@ -3,7 +3,9 @@
 * @author Ivan García
 * @version 1.0, 2024/04/22
 */
-abstract class Carta implements ModificacionesPrecio{
+import java.io.Serializable;
+
+abstract class Carta implements ModificacionesPrecio, Serializable{
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
 
