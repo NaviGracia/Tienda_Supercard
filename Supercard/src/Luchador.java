@@ -58,7 +58,7 @@ public class Luchador extends Carta implements Serializable{
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        return super.toString() + "\t" + fuerza + "\t" + resistencia + "\t" + velocidad + "\t" + carisma + "\t" + super.getPrecio() + "€ \t" + stock;
+        return super.toString() + fuerza + "\t\t" + resistencia + "\t\t" + velocidad + "\t\t" + carisma + "\t\t" + super.getPrecio() + "€ \t" + stock;
     }
 
     @Override

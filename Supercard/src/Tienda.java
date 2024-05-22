@@ -304,7 +304,7 @@ public class Tienda extends Entrada_Salida{
     }
 
     public static void mostrarCartas() throws Exception{
-        System.out.println(ANSI_RED + "NºCarta \tNombre \t\t\t\tCategoría \tFuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
+        System.out.println(ANSI_RED + "NºCarta    Nombre \t\t     Categoría \t\t  Fuerza \tResistencia \tVelocidad \tCarisma \tPrecio \tStock" + ANSI_RESET);
         int controladorSalto = 0;
         for (HashMap.Entry<Integer, Luchador> entry : luchadores.entrySet()) {
             System.out.println(entry.getValue().toString());
