@@ -376,13 +376,36 @@ public class Tienda extends Entrada_Salida{
                     numeroCartaBorrar=entry.getKey();
                 }
             }
-            //Luchadores que no estaban en el hashmap se introducen
+            //Luchadores que no estaban en el hashmap pero si en la copia se introducen
             if(encontrado == false){
                 luchadores.put(l.getN_carta(), l);
+                String sql = "INSERT INTO carta VALUES(?, ?, ?, ?, 100)";
+                PreparedStatement sentencia = conexion.prepareStatement(sql);
+                sentencia.setInt(1, l.getN_carta());
+                sentencia.setString(2, l.getNombre());
+                sentencia.setString(3, l.getCategoria());
+                sentencia.setDouble(4, l.getPrecio());
+                sentencia.executeUpdate();
+                sql = "INSERT INTO luchador VALUES(?, ?, ?, ?, ?)";
+                sentencia = conexion.prepareStatement(sql);
+                sentencia.setInt(1, l.getN_carta());
+                sentencia.setDouble(2, l.getFuerza());
+                sentencia.setDouble(3, l.getResistencia());
+                sentencia.setDouble(4, l.getVelocidad());
+                sentencia.setDouble(5, l.getCarisma());
+                sentencia.executeUpdate();
             }
-            //Se borran aquellos luchadores 
-            if(cartaBorrar==true){
-                luchadores.remove(numeroCartaBorrar);
+            //Se borran aquellos luchadores que estan en el hashmap pero no en la copia
+            try{
+                if(cartaBorrar==true){
+                    luchadores.remove(numeroCartaBorrar);
+                    String sql = "DELETE FROM carta WHERE n_carta = ?";
+                    PreparedStatement sentencia = conexion.prepareStatement(sql);
+                    sentencia.setInt(1, numeroCartaBorrar);
+                    sentencia.executeQuery();
+                }
+            } catch(Exception e){
+                System.out.println("");
             }
         }
         ois.close();
