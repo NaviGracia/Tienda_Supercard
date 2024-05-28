@@ -456,6 +456,3 @@ public class Tienda extends Entrada_Salida{
     System.out.println("Saliendo del Sistema Gestor de la Tienda Supercard.");
     }
 }
-
-
-    
