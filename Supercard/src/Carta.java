@@ -56,30 +56,28 @@ abstract class Carta implements ModificacionesPrecio, Serializable{
     @Override
     public String toString() {
         // TODO Auto-generated method stub
+        return ANSI_CYAN + estandarizarEspaciados(n_carta, nombre, categoria) + "\t" + precio + "€\t" + ANSI_RESET;
+    }
+    
+    public static String estandarizarEspaciados(int n_carta, String nombre, String categoria){
         String frase = "";
-        for(int posicion = 0; posicion <=10; posicion++){
-            if(posicion == 0){
-                frase+= n_carta;
-                posicion+= Integer.toString(n_carta).length()-1;
-            }else{
-                frase+= " ";
+        try{
+            for(int posicion = 0; posicion <=40; posicion++){
+                if(posicion == 0){
+                    frase+= n_carta;
+                    posicion+= Integer.toString(n_carta).length();
+                }else if(posicion == 6){
+                    frase+= nombre;
+                    posicion+= nombre.length()-1;
+                }else if(posicion == 26){
+                    frase+= categoria;
+                    posicion+= categoria.length()-1;
+                }else{
+                    frase+= " ";
+                }
             }
-        }
-        for(int posicion = 0; posicion <=25; posicion++){
-            if(posicion == 0){
-                frase+= nombre;
-                posicion+= nombre.length()-1;
-            }else{
-                frase+= " ";
-            }
-        }
-        for(int posicion = 0; posicion <=20; posicion++){
-            if(posicion == 0){
-                frase+= categoria;
-                posicion+= categoria.length()-1;
-            }else{
-                frase+= " ";
-            }
+        }catch(Exception e){
+            System.out.println("Fallo en la obtención de datos desde la BD: " + e);
         }
         return frase;
     }

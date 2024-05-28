@@ -3,10 +3,7 @@
 * @author Ivan García
 * @version 1.0, 2024/04/22
 */
-
-import java.io.Serializable;
-
-public class Luchador extends Carta implements Serializable{
+public class Luchador extends Carta{
     private int fuerza;
     private int resistencia;
     private int velocidad;
@@ -55,6 +52,14 @@ public class Luchador extends Carta implements Serializable{
         this.carisma = carisma;
     }
 
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
     @Override
     public String toString() {
         // TODO Auto-generated method stub
@@ -63,6 +68,6 @@ public class Luchador extends Carta implements Serializable{
 
     @Override
     public int venderCarta(){
-        return stock - 1;
+        return this.stock - 1;
     }
 }
