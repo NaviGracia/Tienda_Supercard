@@ -4,6 +4,11 @@
 * @version 1.0, 2024/04/22
 */
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 abstract class Carta implements ModificacionesPrecio, Serializable{
     public static final String ANSI_CYAN = "\u001B[36m";
@@ -51,6 +56,16 @@ abstract class Carta implements ModificacionesPrecio, Serializable{
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public void insertarCartaBD(PreparedStatement sentencia) throws Exception{
+        String sql = "INSERT INTO carta VALUES(?, ?, ?, ?, 100)";
+        sentencia = conexion.prepareStatement(sql);
+        sentencia.setInt(1, nCarta);
+        sentencia.setString(2, recibirNombreCarta());
+        sentencia.setString(3, recibirCategoria(st));
+        sentencia.setDouble(4, recibirPrecio());
+        sentencia.executeUpdate();
     }
 
     @Override

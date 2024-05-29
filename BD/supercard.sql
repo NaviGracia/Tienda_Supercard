@@ -103,8 +103,6 @@ BEFORE DELETE ON carta
 FOR EACH ROW
 EXECUTE FUNCTION eliminar_luchador();
 
-INSERT INTO luchador VALUES(1, 21, 19, 18, 20)
-
 /*------------------------------------------------------------------------------------*/
 
 CREATE TABLE IF NOT EXISTS public.categoria(
@@ -117,21 +115,6 @@ INSERT INTO categoria VALUES('Royal Rumble 24', '2024-01-24');
 INSERT INTO categoria VALUES('Tundra', '2023-12-20');
 
 /*------------------------------------------------------------------------------------*/
-
-SELECT * FROM carta
-SELECT * FROM catalogo_cartas ORDER BY n_carta
-SELECT categoria FROM categoria
-SELECT * FROM luchador
-
-/*Consulta busqueda*/
-SELECT ca.n_carta, ca.nombre, ca.categoria, ca.precio, ca.stock, l.fuerza, l.resistencia, l.velocidad, l.carisma
-FROM carta ca LEFT JOIN luchador l ON ca.n_carta = l.n_carta
-
-UPDATE carta SET stock = 100 WHERE n_carta = 4
-
-UPDATE catalogo_cartas SET nombre = 'Cody Rhodes' WHERE n_carta = 2
-
-SELECT * FROM categoria
 
 CREATE TABLE IF NOT EXISTS public.cuenta_banco(
 	numero_cuenta varchar(30) PRIMARY KEY,

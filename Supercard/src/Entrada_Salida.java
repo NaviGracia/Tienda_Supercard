@@ -81,6 +81,28 @@ public class Entrada_Salida {
         return devolverDouble();
     }
 
+    public static int recibirFuerza(){
+        System.out.println("Inserte la fuerza de la carta:");   
+        return devolverInt();
+    }
+
+    public static int recibirResistencia(){
+        System.out.println("Inserte la resistencia de la carta:");   
+        return devolverInt();
+    }
+
+    public static int recibirVelocidad(){
+        System.out.println("Inserte la velocidad de la carta:");   
+        return devolverInt();
+    }
+
+    public static int recibirCarisma(){
+        System.out.println("Inserte el carisma de la carta:");   
+        return devolverInt();
+    }
+
+
+
     public static void mostrarCategorias(Statement st){
         try {
             ResultSet rs = st.executeQuery("SELECT categoria FROM categoria");

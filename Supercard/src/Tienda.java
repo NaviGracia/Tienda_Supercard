@@ -44,48 +44,16 @@ public class Tienda extends Entrada_Salida{
         }
     }
 
-    public static String mostrarCarta(ResultSet rs) throws Exception{
-        return ANSI_CYAN + estandarizarEspaciados(rs) + "\t" + rs.getDouble(4) + "€\t" + rs.getInt(5) + ANSI_RESET;
-    }
-
-    public static String estandarizarEspaciados(ResultSet rs){
-        String frase = "";
-        try{
-            for(int posicion = 0; posicion <=40; posicion++){
-                if(posicion == 0){
-                    frase+= rs.getInt(1);
-                    posicion+= Integer.toString(rs.getInt(1)).length()-1;
-                }else if(posicion == 6){
-                    frase+= rs.getString(2);
-                    posicion+= rs.getString(2).length()-1;
-                }else if(posicion == 26){
-                    frase+= rs.getString(3);
-                    posicion+= rs.getString(3).length()-1;
-                }else{
-                    frase+= " ";
-                }
-            }
-        }catch(Exception e){
-            System.out.println("Fallo en la obtención de datos desde la BD: " + e);
-        }
-        return frase;
-    }
-
-    //Controlador de Resultados
-    public static String controladorContinuar(){
-        System.out.println("Presione Enter para continuar.");
-        return devolverString();
-    }
-
-    public static void controladorObjetos(Luchador l){
-        int controladorCatalogo = 0;
-        if (controladorCatalogo == 6) {
-            System.out.println(l.toString());
-            controladorContinuar();
-            controladorCatalogo = 0;
-        } else{
-            System.out.println(l.toString());
-            controladorCatalogo++;
+    public static void registrarNuevaCarta(){
+        try {
+            Luchador l = new Luchador(recibirNumCarta(), recibirNombreCarta(), recibirCategoria(st), recibirPrecio(), recibirFuerza(), recibirResistencia(), recibirVelocidad(), recibirCarisma(), 100);
+            l.insertarCartaBD(sentencia);
+            insertarLuchadorBD(nCarta);
+            registrarNuevaCartaHashMap(nCarta);
+            System.out.println("Carta registrada correctamente");
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("Error en el registro de una nueva carta: " + e);
         }
     }
 
@@ -104,7 +72,6 @@ public class Tienda extends Entrada_Salida{
         String sql = "INSERT INTO luchador VALUES(?, ?, ?, ?, ?)";
         sentencia = conexion.prepareStatement(sql);
         sentencia.setInt(1, nCarta);
-        System.out.println("Inserte la fuerza de la carta:");
         sentencia.setDouble(2, devolverInt());
         System.out.println("Inserte la resistencia de la carta:");
         sentencia.setDouble(3, devolverInt());
@@ -125,19 +92,6 @@ public class Tienda extends Entrada_Salida{
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println("Error en la inserción de la nueva carta en el arraylist: "+ e);
-        }
-    }
-
-    public static void registrarNuevaCarta(){
-        try {
-            int nCarta = recibirNumCarta();
-            insertarCartaBD(nCarta);
-            insertarLuchadorBD(nCarta);
-            registrarNuevaCartaHashMap(nCarta);
-            System.out.println("Carta registrada correctamente");
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println("Error en el registro de una nueva carta: " + e);
         }
     }
 
@@ -263,13 +217,14 @@ public class Tienda extends Entrada_Salida{
     public static void mostrarCatalogo() throws Exception{
         ResultSet rs = st.executeQuery("SELECT n_carta, nombre, categoria, precio, stock FROM catalogo_cartas ORDER BY n_carta");
         int controladorCatalogo = 0;
+        Luchador l = new Luchador(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5));
         while (rs.next()) {
             if (controladorCatalogo == 6) {
-                System.out.println(mostrarCarta(rs));
+                System.out.println(l.toString());
                 controladorContinuar();
                 controladorCatalogo = 0;
             } else{
-                System.out.println(mostrarCarta(rs));
+                System.out.println(l.toString());
                 controladorCatalogo++;
             }
         }
