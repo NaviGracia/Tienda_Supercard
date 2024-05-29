@@ -378,9 +378,10 @@ public class Tienda extends Entrada_Salida{
         boolean descuento = devolverBoolean();
         if(descuento = true){
             ct.venta(obtenerPrecioDescontado(cartaVendida));
+        }else{
+            ct.venta(luchadores.get(cartaVendida).getPrecio());
+            luchadores.get(cartaVendida).venderCarta();
         }
-        ct.venta(luchadores.get(cartaVendida).getPrecio());
-        luchadores.get(cartaVendida).venderCarta();
     }
 
     public static double obtenerPrecioDescontado(int cartaVendida){

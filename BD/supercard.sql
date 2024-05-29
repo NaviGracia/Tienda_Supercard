@@ -132,3 +132,8 @@ UPDATE carta SET stock = 100 WHERE n_carta = 4
 UPDATE catalogo_cartas SET nombre = 'Cody Rhodes' WHERE n_carta = 2
 
 SELECT * FROM categoria
+
+CREATE TABLE IF NOT EXISTS public.cuenta_banco(
+	numero_cuenta varchar(30) PRIMARY KEY,
+	dinero double precision 
+);
